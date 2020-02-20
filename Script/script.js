@@ -1,8 +1,15 @@
 //Getting DOM Elements
-const time = document.getElementById('time'),
+const API_Key="563492ad6f917000010000017ceed48c9a2b4cad83b35a79a9fde899";
+let time = document.getElementById('time'),
     greeting = document.getElementById('greeting'),
     name = document.getElementById('name'),
-    focus = document.getElementById('UserFocus');
+    focus = document.getElementById('UserFocus'),
+    headers={
+        Authorization: API_Key
+    },
+    greet="night",
+    cat=["abstarct","abstract","abstract","sunset","space","universe","galaxy","clouds","forest","mountains","rain","city","night","seas","architecture"],
+    bckURl="";
 function showTime(){  
 //Getting Time
     let today = new Date(),
@@ -20,7 +27,6 @@ function showTime(){
 }
 function getGreetings(hour){
 //Defing Greetings Changing Background
-    let greet="night";
 if(hour>=5 && hour<12)
     greet='morning';
 else if(hour>=12 && hour<17)
@@ -30,26 +36,16 @@ else if(hour>=17 && hour<20)
 else if(hour>=20 && hour<5)
     greet='night';
     greeting.innerHTML=`good ${greet} `;
-    document.body.style.backgroundImage=`url(./images/${greet}.jpg)`
 }
 //Getting User Name from Local Storage
 function getName(){
     let UserName=null;
     if(localStorage.getItem('name')===null)
-        UserName="[enter name]";
+        UserName="[enter search]";
     else{
         UserName=localStorage.getItem('name')
     }
     name.innerHTML=`${UserName}`;
-}
-//Getting Focus from Local Storage
-function getFocus(){
-    let UserFocus=null;
-    if(localStorage.getItem('UserFocus')===null)
-        UserFocus="[Enter Focus]";
-    else
-        UserFocus=localStorage.getItem('UserFocus');
-    focus.innerHTML=`${UserFocus}`;
 }
 //Storing data from user
 function setType(e){
@@ -68,7 +64,30 @@ function input(type){
     type.innerText=null;
     type.addEventListener("keypress",setType);
 }
-showTime();
-getName();
-getFocus();
-getWheatherData();
+
+const fetch_url=(search)=>{
+   let url=`https://api.pexels.com/v1/search?query=landscape+${search}+query&per_page=20&page=1`
+    fetch(url,{
+        headers,
+        mode:"cors",
+        method:"GET"
+    })
+    .then(resp=>resp.json())
+    .then(data=>{
+        url = `${data.photos[Math.floor(Math.random()*10)].src.original}?auto=compress&cs=tinysrgb&dpr=2&h=1080&w=1920`
+        console.log(data);
+        document.body.style.backgroundImage=`url(${url})`
+        }
+    )
+}
+
+
+const init=async ()=>{
+    showTime();
+    let ser = cat[Math.floor(Math.random()*cat.length)]
+    await fetch_url(ser)
+    console.log(ser);
+    
+    getName();
+}
+init()

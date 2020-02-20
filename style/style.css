@@ -3,7 +3,12 @@
     padding:0;
     margin:0;
     font-family: 'Quicksand',sans-serif;
-    color:rgba(255, 255, 255, 0.9);
+    color:rgba(255, 255, 255, 0.7);
+}
+.box{
+    max-width: 500px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 0 30px;
 }
 body{
     display: flex;
@@ -13,14 +18,14 @@ body{
     width: 100%;
     justify-content: center;
     background-size: cover;
-    background-position: bottom;
+    background-position: center;
     text-align: center;
 }
 #icons img{
-    
-    height: 60px;
-    margin: 8px;
-    opacity: 0.5;
+    filter: invert(1);
+    height: 75px;
+    padding: 10px;
+    opacity: 0.7;
     cursor: pointer;
 }
 #icons img:hover{
@@ -33,31 +38,30 @@ body{
     margin: 15px;
 }
 #search-bar input{
-    width:130%;
-    position: relative;
-    left: -15%;
+    width:fit-content;
     border-radius: 50px;
     border-style:none;
     padding:3px 10px;
-    background-color: rgba(0, 0, 0, 0.6);
+    margin:20px 0 10px 0;
+    background-color: rgba(255, 255, 255, 0.7);
     user-select: none;
 }
 
 #time{
-    font-size:150px;
+    font-size:140px;
 }
 #AmPm{
     font-size: 30px;
 }
 h2{
     margin-bottom: .5rem;
-    opacity: 0.6;
+    opacity: 0.8;
 }
 #greeting,#name{
     padding: 10px 0;
     margin:10px 0;
     font-size: 30px;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.8);
     text-transform: capitalize;
 }
 @media(max-width:700px){
