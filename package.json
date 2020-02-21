@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A landing page",
   "main": "index.js",
-  "homepage": "https://www.reyzartz.github.io/Landing-page",
+  "homepage": "https://reyzartz.github.io/Landing-page",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   
