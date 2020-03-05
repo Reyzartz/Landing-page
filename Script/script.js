@@ -1,5 +1,7 @@
 //Getting DOM Elements
 const API_Key="563492ad6f917000010000017ceed48c9a2b4cad83b35a79a9fde899";
+current_image_url="";
+let img_tag=document.getElementById('save-image');
 let time = document.getElementById('time'),
     greeting = document.getElementById('greeting'),
     name = document.getElementById('name'),
@@ -74,9 +76,12 @@ const fetch_url=(search)=>{
     })
     .then(resp=>resp.json())
     .then(data=>{
-        url = `${data.photos[Math.floor(Math.random()*10)].src.original}?auto=compress&cs=tinysrgb&dpr=2&h=1080&w=1920`
+        current_image_url =data.photos[Math.floor(Math.random()*10)].src.original;
+        url = `${current_image_url}?auto=compress&cs=tinysrgb&dpr=2&h=1080&w=1920`
         console.log(data);
         document.body.style.backgroundImage=`url(${url})`
+        img_tag.setAttribute("href",current_image_url);
+        img_tag.setAttribute("download");
         }
     )
 }

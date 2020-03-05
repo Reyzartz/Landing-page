@@ -67,6 +67,25 @@ h2{
     border-bottom: 2px solid rgba(255, 255, 255, 0.8);
     text-transform: capitalize;
 }
+#save-image{
+    position: absolute;
+    bottom:0;
+    right:0;
+}
+#save-image button{
+    background-color: rgba(255, 255, 255, 0.3);
+    border-style: none;
+    font-weight: bold;
+    border-bottom: 2px #000 solid;
+    padding:6px 10px;
+    margin:10px;
+    color:rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    transition: background 0.4s;
+}
+#save-image button:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+}
 @media(max-width:700px){
     #time{
         font-size: 7rem;
