@@ -6,16 +6,16 @@ let time = document.getElementById('time'),
     greeting = document.getElementById('greeting'),
     name = document.getElementById('name'),
     focus = document.getElementById('UserFocus'),
-    currentOptions = localStorage.getItem('LandingPageOptions').split(',')
     headers={
         Authorization: API_Key
     },
     greet="night",
     cat=["abstarct","abstract","abstract","sunset","space","universe","galaxy","clouds","forest","mountains","rain","city","night","seas","architecture"],
+    currentOptions = localStorage.getItem('LandingPageOptions')===null ? []:localStorage.getItem('LandingPageOptions').split(','),
     bckURl="",
     img_size=null
-    open_option_state=false;;
-
+    open_option_state=false;
+    
 
 function showTime(){  
 //Getting Time
@@ -81,7 +81,7 @@ function input(type){
 }
 
 const fetch_url=(search)=>{
-   let url=`https://api.pexels.com/v1/search?query=landscape+${search}+query&per_page=30&page=1`
+   let url=`https://api.pexels.com/v1/search?query=background+${search}+query&per_page=30&page=1`
     fetch(url,{
         headers,
         mode:"cors",
@@ -117,7 +117,7 @@ function addOptions(e){
        let currentOptionsInput=document.getElementById("InputOptions").value;
        currentOptions.push(currentOptionsInput)
        localStorage.setItem(`LandingPageOptions`, currentOptions);
-       currentOptionsInput=""
+       fetch_url(currentOptionsInput)
        getOptions()
    }
     
