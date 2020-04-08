@@ -29,6 +29,41 @@
             </div>
     </div>
     <a id="save-image" target="_blank"><button>SAVE IMAGE</button></a>
+    <div title="options" class="option-btn" onclick="open_option()">
+        <img src="./images/fonts/settings.png">
+    </div>
+    <div class="options" >
+        <h3>
+            <u>
+                Image Tags
+            </u>
+            
+        </h3>
+        <ul class="currentOptions" id="currentOptions">
+
+        </ul>
+        <h3>
+            <u>
+                Add Tags
+            </u>
+            
+        </h3>
+        
+        <input type="text" placeholder="Add Topics" name="options" id="InputOptions" onkeypress="addOptions(event)"/>
+        <h3>
+            <u>
+                Image Size
+            </u>
+        </h3>
+        
+        <select  onclick="setImageSize(event)" id="sizes">
+            <option >Small</option>
+            <option >Medium</option>
+            <option >Large</option>
+            <option >Large2x</option>
+            <option >Original</option>
+        </select>
+    </div>
     <script src="./Script/script.js"></script>
 </body>
 </html>

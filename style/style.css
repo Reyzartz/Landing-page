@@ -73,19 +73,87 @@ h2{
     right:0;
 }
 #save-image button{
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(0,0,0,0.7);
     border-style: none;
     font-weight: bold;
     border-bottom: 2px #000 solid;
     padding:6px 10px;
     margin:10px;
-    color:rgba(0, 0, 0, 0.8);
     cursor: pointer;
     transition: background 0.4s;
 }
 #save-image button:hover{
     background-color: rgba(0, 0, 0, 0.2);
 }
+.options{
+    transition: 0.3s transform;
+    transform: translateY(-100%);
+    position: absolute;
+    top:0;
+    right:0;
+    max-width: 250px;
+    background-color: rgba(0,0,0,0.6);
+    border-bottom-left-radius: 28px;
+    padding-top: 45px;
+}
+.currentOptions li{
+    position: relative;
+    padding: 3px;
+    list-style: none;
+    margin:  5px 0;
+}
+.options input{
+    background-color: rgba(255, 255, 255, 0.6);
+    border: none;
+    padding: 8px;
+    margin: 10px;
+    color:#000;
+    border-radius: 50px;
+}
+.currentOptions span{
+    position: absolute;
+    right: 3px;
+    border: 1px #ddd solid;
+    height: 24px;
+    width: 20px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.currentOptions span:hover{
+    background-color: rgba(250, 41, 41, 0.801);
+}
+.option-btn{
+    position: absolute;
+    top:10px;
+    height: 35px;
+    width: 35px;
+    right: 10px;
+    opacity: 0.9;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding:5px;
+    border-radius: 50%;
+    z-index: 10;
+    cursor: pointer;
+}
+.option-btn img{
+    height: 100%;
+}
+.option-btn:active{
+    transform: rotate(80deg);
+    transition: 0.5s transform;
+}
+#sizes{
+    background-color: transparent;
+    margin: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+#sizes option{
+    background-color: rgba(0,0,0,0.7);
+   cursor: pointer;
+}
+
+
 @media(max-width:700px){
     #time{
         font-size: 7rem;

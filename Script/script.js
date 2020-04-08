@@ -6,12 +6,17 @@ let time = document.getElementById('time'),
     greeting = document.getElementById('greeting'),
     name = document.getElementById('name'),
     focus = document.getElementById('UserFocus'),
+    currentOptions = localStorage.getItem('LandingPageOptions').split(',')
     headers={
         Authorization: API_Key
     },
     greet="night",
     cat=["abstarct","abstract","abstract","sunset","space","universe","galaxy","clouds","forest","mountains","rain","city","night","seas","architecture"],
-    bckURl="";
+    bckURl="",
+    img_size=null
+    open_option_state=false;;
+
+
 function showTime(){  
 //Getting Time
     let today = new Date(),
@@ -27,6 +32,8 @@ function showTime(){
 
         setTimeout(showTime,1000);
 }
+
+
 function getGreetings(hour){
 //Defing Greetings Changing Background
 if(hour>=5 && hour<12)
@@ -39,6 +46,8 @@ else if(hour>=20 && hour<5)
     greet='night';
     greeting.innerHTML=`good ${greet} `;
 }
+
+
 //Getting User Name from Local Storage
 function getName(){
     let UserName=null;
@@ -49,6 +58,8 @@ function getName(){
     }
     name.innerHTML=`${UserName}`;
 }
+
+
 //Storing data from user
 function setType(e){
     if(e.type==="keypress"){
@@ -62,13 +73,15 @@ function setType(e){
         localStorage.setItem(`${e.target.id}`,e.target.innerText);
     }
 }
+
+
 function input(type){
     type.innerText=null;
     type.addEventListener("keypress",setType);
 }
 
 const fetch_url=(search)=>{
-   let url=`https://api.pexels.com/v1/search?query=landscape+${search}+query&per_page=20&page=1`
+   let url=`https://api.pexels.com/v1/search?query=landscape+${search}+query&per_page=30&page=1`
     fetch(url,{
         headers,
         mode:"cors",
@@ -76,23 +89,100 @@ const fetch_url=(search)=>{
     })
     .then(resp=>resp.json())
     .then(data=>{
-        current_image_url =data.photos[Math.floor(Math.random()*10)].src.original;
-        url = `${current_image_url}?auto=compress&cs=tinysrgb&dpr=2&h=1080&w=1920`
+        current_image_url =data.photos[Math.floor(Math.random()*30)].src.original;
+        url = `${current_image_url}${img_size}`
+        console.log(url);
+        
         console.log(data);
         document.body.style.backgroundImage=`url(${url})`
         img_tag.setAttribute("href",current_image_url);
-        img_tag.setAttribute("download");
+        img_tag.setAttribute("download","download");
         }
     )
 }
 
 
 const init=async ()=>{
+    getImageSize();
     showTime();
-    let ser = cat[Math.floor(Math.random()*cat.length)]
+    let ser = currentOptions[Math.floor(Math.random()*currentOptions.length)]
     await fetch_url(ser)
     console.log(ser);
     
     getName();
+    getOptions();
+}
+function addOptions(e){
+   if(e.key === "Enter"){
+       let currentOptionsInput=document.getElementById("InputOptions").value;
+       currentOptions.push(currentOptionsInput)
+       localStorage.setItem(`LandingPageOptions`, currentOptions);
+       currentOptionsInput=""
+       getOptions()
+   }
+    
+}
+function deleteOption(op){
+    index=null
+    index = currentOptions.findIndex( o => o===op)
+    currentOptions.splice(index,1)
+    localStorage.setItem(`LandingPageOptions`, currentOptions);
+    getOptions()
+    
+}
+function getOptions(){
+    let optionList = document.getElementById("currentOptions")
+    list=""
+    document.getElementById("InputOptions").value=""
+    currentOptions.forEach( o=>{
+        list+=`
+        <li>
+            ${o}
+            <span title="delete" onclick='deleteOption("${o}")'>
+                x
+            </span>
+        </li>
+        `
+    })
+    optionList.innerHTML=list
+}
+
+function open_option(){
+    let option=document.querySelector(".options")
+    if(!open_option_state){
+        option.style.transform="translateY(0%)";
+    }
+    else{
+        option.style.transform="translateY(-100%)";
+    }
+    open_option_state=!open_option_state
+}
+function getImageSize(){
+    img_size = localStorage.getItem('LandingPage_image_size')
+    if(img_size===null){
+        img_size = '?auto=compress&cs=tinysrgb&dpr=2&h=1080&w=1550'
+    }
+}
+function setImageSize(event){
+    let size =""
+    sizeType = event.toElement.value
+    switch(sizeType){
+        case "Small":
+                size='?auto=compress&cs=tinysrgb&dpr=2&h=200'
+            break;
+        case 'Medium':
+                size = '?auto=compress&cs=tinysrgb&dpr=2&h=400'
+            break;
+        case 'Large':
+                size = '?auto=compress&cs=tinysrgb&dpr=2&h=600'
+            break;
+        case 'Large2x':
+                size= '?auto=compress&cs=tinysrgb&dpr=2&h=1080'
+            break
+        case 'Original':
+                size = ''
+            break
+    }
+    localStorage.setItem('LandingPage_image_size',size)
 }
 init()
