@@ -4,7 +4,7 @@ current_image_url="";
 let img_tag=document.getElementById('save-image');
 let time = document.getElementById('time'),
     greeting = document.getElementById('greeting'),
-    name = document.getElementById('name'),
+    weather = document.getElementById('weather'),
     focus = document.getElementById('UserFocus'),
     headers={
         Authorization: API_Key
@@ -15,6 +15,10 @@ let time = document.getElementById('time'),
     bckURl="",
     img_size=null
     open_option_state=false;
+    pos={
+        lat:null,
+        lon:null
+    }
     
 
 function showTime(){  
@@ -23,8 +27,6 @@ function showTime(){
         hour=today.getHours(),
         mins=today.getMinutes(),
         AmPm =hour>12?'PM':'AM';
-//Changing Greeting        
-        getGreetings(hour);
 //Setting time in 12 hour Foronat
         hour = hour>12 ? hour-12: hour==0?12:hour;
         mins=mins<10 ? `0${mins}`:mins;
@@ -34,31 +36,7 @@ function showTime(){
 }
 
 
-function getGreetings(hour){
-//Defing Greetings Changing Background
-if(hour>=5 && hour<12)
-    greet='morning';
-else if(hour>=12 && hour<17)
-    greet='afternoon';
-else if(hour>=17 && hour<20)
-    greet='evening';
-else if(hour>=20 && hour<5)
-    greet='night';
-    greeting.innerHTML=`good ${greet} `;
-}
-
-
 //Getting User Name from Local Storage
-function getName(){
-    let UserName=null;
-    if(localStorage.getItem('name')===null)
-        UserName="[enter search]";
-    else{
-        UserName=localStorage.getItem('name')
-    }
-    name.innerHTML=`${UserName}`;
-}
-
 
 //Storing data from user
 function setType(e){
@@ -102,16 +80,7 @@ const fetch_url=(search)=>{
 }
 
 
-const init=async ()=>{
-    getImageSize();
-    showTime();
-    let ser = currentOptions[Math.floor(Math.random()*currentOptions.length)]
-    await fetch_url(ser)
-    console.log(ser);
-    
-    getName();
-    getOptions();
-}
+
 function addOptions(e){
    if(e.key === "Enter"){
        let currentOptionsInput=document.getElementById("InputOptions").value;
@@ -184,5 +153,55 @@ function setImageSize(event){
             break
     }
     localStorage.setItem('LandingPage_image_size',size)
+}
+const init=async ()=>{
+    getImageSize();
+    showTime();
+    await geoLocation();
+    let ser = currentOptions[Math.floor(Math.random()*currentOptions.length)]
+    await fetch_url(ser)
+    console.log(ser);
+    getOptions();
+}
+
+function geoLocation(){
+    if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(position=>{
+            let lat = position.coords.latitude
+            let lon = position.coords.longitude
+            getWeatherdata(lat,lon)
+        })
+    }
+    else{
+        console.log("error");
+        
+    }
+}
+async function getWeatherdata(lat,lon){
+
+    if(navigator.geolocation){
+        let url = `https:\\api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=38eab07d571a7a518ed3f5c2624b0604&units=metric`
+        console.log(url);
+        
+        await fetch(url)
+        .then(resp =>resp.json())
+        .then(data=>{
+            console.log(data);
+            weather.innerHTML=`
+                <div class="weather">
+                    <span> ${data.main.temp}&#176C  <img src="./images/fonts/${data.weather[0].icon}.svg">${data.weather[0].description}</span>
+                    
+                </div>
+            `
+        }
+        )
+    }
+    else{
+
+    }
+}
+function showPosition(position) {
+    pos.lat = position.coords.latitude
+    pos.lon = position.coords.longitude
 }
 init()
