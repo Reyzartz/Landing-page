@@ -9,9 +9,8 @@ let time = document.getElementById('time'),
     headers={
         Authorization: API_Key
     },
-    greet="night",
-    cat=["abstarct","abstract","abstract","sunset","space","universe","galaxy","clouds","forest","mountains","rain","city","night","seas","architecture"],
-    currentOptions = localStorage.getItem('LandingPageOptions')===null ? []:localStorage.getItem('LandingPageOptions').split(','),
+    currentOptions = localStorage.getItem('LandingPageOptions')===""  || localStorage.getItem('LandingPageOptions')===null? 
+                    [] : localStorage.getItem('LandingPageOptions').split(','),
     bckURl="",
     img_size=null
     open_option_state=false;
@@ -35,8 +34,31 @@ function showTime(){
         setTimeout(showTime,1000);
 }
 
+
+//Getting User Name from Local Storage
+
+//Storing data from user
+function setType(e){
+    if(e.type==="keypress"){
+        if(e.keyCode ==13){
+        localStorage.setItem(`${e.target.id}`,e.target.innerText);
+        name.blur();
+        focus.blur();
+        }
+    }
+    else if(e.type==="blur"){
+        localStorage.setItem(`${e.target.id}`,e.target.innerText);
+    }
+}
+
+
+function input(type){
+    type.innerText=null;
+    type.addEventListener("keypress",setType);
+}
+
 const fetch_url=(search)=>{
-   let url=`https://api.pexels.com/v1/search?query=background+${search}+query&per_page=30&page=1`
+   let url=`https://api.pexels.com/v1/search?query=landscape+${search}+query&per_page=30&page=1`
     fetch(url,{
         headers,
         mode:"cors",
@@ -78,18 +100,29 @@ function deleteOption(op){
 }
 function getOptions(){
     let optionList = document.getElementById("currentOptions")
-    list=""
+    let list=""
     document.getElementById("InputOptions").value=""
-    currentOptions.forEach( o=>{
-        list+=`
-        <li>
-            ${o}
-            <span title="delete" onclick='deleteOption("${o}")'>
-                x
-            </span>
-        </li>
-        `
-    })
+    if(currentOptions.length>0){
+        currentOptions.forEach( o => {
+            list+=`
+            <li>
+                ${o}
+                <span title="delete" onclick='deleteOption("${o}")'>
+                    x
+                </span>
+            </li>
+            `
+        })
+    }
+    else{
+        list = `<li>
+                    <br>
+                    No Tags Found
+                    <br>
+                    <br>
+                </li>`
+    }
+    
     optionList.innerHTML=list
 }
 
@@ -157,7 +190,7 @@ function geoLocation(){
 async function getWeatherdata(lat,lon){
 
     if(navigator.geolocation){
-        let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=38eab07d571a7a518ed3f5c2624b0604&units=metric`
+        let url = `https:\\api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=38eab07d571a7a518ed3f5c2624b0604&units=metric`
         console.log(url);
         
         await fetch(url)
