@@ -190,7 +190,7 @@ function geoLocation(){
 async function getWeatherdata(lat,lon){
 
     if(navigator.geolocation){
-        let url = `https:\\api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=38eab07d571a7a518ed3f5c2624b0604&units=metric`
+        let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=38eab07d571a7a518ed3f5c2624b0604&units=metric`
         console.log(url);
         
         await fetch(url)
