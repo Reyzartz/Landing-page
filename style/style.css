@@ -81,6 +81,7 @@ h2{
     margin:10px;
     cursor: pointer;
     transition: background 0.4s;
+    border-radius: 50px;
 }
 #save-image button:hover{
     background-color: rgba(0, 0, 0, 0.2);

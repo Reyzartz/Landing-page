@@ -35,8 +35,6 @@ function showTime(){
 }
 
 
-//Getting User Name from Local Storage
-
 //Storing data from user
 function setType(e){
     if(e.type==="keypress"){
@@ -136,15 +134,24 @@ function open_option(){
     }
     open_option_state=!open_option_state
 }
+
 function getImageSize(){
     img_size = localStorage.getItem('LandingPage_image_size')
+    img_size_type = localStorage.getItem('LandingPage_size')
+    console.log(img_size_type);
     if(img_size===null){
         img_size = '?auto=compress&cs=tinysrgb&dpr=2&h=1080&w=1550'
+    }
+    let ch = document.querySelector("#sizes")
+    for(let i=0;i<5;i++){
+        if(ch.children[i].value===img_size_type){
+            ch.children[i].selected = true;
+        } 
     }
 }
 function setImageSize(event){
     let size =""
-    sizeType = event.toElement.value
+    sizeType = event.toElement.value;
     switch(sizeType){
         case "Small":
                 size='?auto=compress&cs=tinysrgb&dpr=2&h=200'
@@ -163,6 +170,7 @@ function setImageSize(event){
             break
     }
     localStorage.setItem('LandingPage_image_size',size)
+    localStorage.setItem('LandingPage_size',sizeType)
 }
 const init=async ()=>{
     getImageSize();
@@ -170,7 +178,6 @@ const init=async ()=>{
     await geoLocation();
     let ser = currentOptions[Math.floor(Math.random()*currentOptions.length)]
     await fetch_url(ser)
-    console.log(ser);
     getOptions();
 }
 
@@ -190,7 +197,7 @@ function geoLocation(){
 async function getWeatherdata(lat,lon){
 
     if(navigator.geolocation){
-        let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=38eab07d571a7a518ed3f5c2624b0604&units=metric`
+        let url = `https:\\api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=38eab07d571a7a518ed3f5c2624b0604&units=metric`
         console.log(url);
         
         await fetch(url)
